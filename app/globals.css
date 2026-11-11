@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --grad-brand: linear-gradient(110deg, #5aa7e8 0%, #2f6fb8 30%, #a983d6 62%, #f4b54f 100%);
+}
+
+html {
+  scroll-behavior: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+body {
+  background: #050a1c;
+}
+
+::selection {
+  background: #7b4fa6;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #03061a;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#2f6fb8, #7b4fa6, #f4b54f);
+  border-radius: 10px;
+  border: 2px solid #03061a;
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+
+  .text-gradient {
+    background: var(--grad-brand);
+    background-size: 100% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-anim {
+    @apply text-gradient animate-shine;
+    background-size: 200% auto;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-semibold tracking-wide text-brand-amber backdrop-blur;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-1.5 w-1.5 rounded-full bg-brand-amber shadow-[0_0_10px_#f4b54f];
+  }
+
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-7 py-3.5 font-display text-sm font-bold text-night transition-shadow duration-300;
+    background: linear-gradient(110deg, #f4b54f, #e2793a);
+    box-shadow: 0 10px 40px -10px rgba(244, 181, 79, 0.65);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 14px 50px -8px rgba(244, 181, 79, 0.85);
+  }
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.8s ease;
+  }
+  .btn-primary:hover::after {
+    transform: translateX(120%);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-7 py-3.5 font-display text-sm font-bold text-paper backdrop-blur transition-colors duration-300 hover:border-brand-sky/60 hover:bg-brand-blue/15;
+  }
+
+  /* Animated gradient border */
+  .border-glow {
+    position: relative;
+    isolation: isolate;
+  }
+  .border-glow::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(from var(--angle, 0deg), #2f6fb8, #7b4fa6, #f4b54f, #e2793a, #5aa7e8, #2f6fb8);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: angle 6s linear infinite;
+    z-index: -1;
+  }
+
+  .noise {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(rgba(154, 167, 199, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(154, 167, 199, 0.07) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+  }
+
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(154, 167, 199, 0.25);
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-white/10 bg-night-900/60 px-4 pb-2.5 pt-6 text-sm text-paper outline-none transition-all duration-300 placeholder:text-transparent focus:border-brand-sky/70 focus:bg-night-800/80 focus:shadow-[0_0_0_4px_rgba(90,167,232,0.12)];
+  }
+  .field-label {
+    @apply pointer-events-none absolute start-4 top-4 origin-[0] text-sm text-mist transition-all duration-200 peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-brand-sky peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:text-[11px];
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
