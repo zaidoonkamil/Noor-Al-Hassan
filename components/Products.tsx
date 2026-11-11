@@ -45,14 +45,14 @@ function Card({ item, index, more, big }: { item: Item; index: number; more: str
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.9, delay: (index % 3) * 0.1, ease }}
-      className={`[perspective:1000px] ${layout[index]}`}
+      className={`lg:[perspective:1000px] ${layout[index]}`}
     >
       <motion.div
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         style={{ rotateX: rx, rotateY: ry }}
         data-cursor
-        className="group relative flex h-full min-h-[300px] flex-col justify-end overflow-hidden rounded-[1.75rem] border border-white/10 bg-night-800 [transform-style:preserve-3d]"
+        className="group relative flex h-full min-h-[300px] flex-col justify-end overflow-hidden rounded-[1.75rem] border border-white/10 bg-night-800 lg:[transform-style:preserve-3d]"
       >
         <Image
           src={item.image}
@@ -68,7 +68,7 @@ function Card({ item, index, more, big }: { item: Item; index: number; more: str
           0{index + 1}
         </span>
 
-        <div className="relative p-6 sm:p-7" style={{ transform: "translateZ(40px)" }}>
+        <div className="relative p-6 sm:p-7 lg:[transform:translateZ(40px)]">
           <h3 className={`font-display font-extrabold ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}>{item.title}</h3>
           <p className={`mt-2 leading-7 text-mist ${big ? "max-w-md text-base" : "text-sm"}`}>{item.desc}</p>
           <a
@@ -88,7 +88,7 @@ function Card({ item, index, more, big }: { item: Item; index: number; more: str
 export default function Products({ t }: { t: Dictionary }) {
   return (
     <section id="products" className="relative overflow-hidden py-28 sm:py-36">
-      <div className="absolute start-0 top-0 -z-10 h-[500px] w-[500px] rounded-full bg-brand-blue/15 blur-[150px]" />
+      <div className="absolute start-0 top-0 -z-10 h-[500px] w-[500px] bg-[radial-gradient(closest-side,rgba(47,111,184,0.24),transparent)]" />
       <div className="container-x">
         <SectionHeading eyebrow={t.products.eyebrow} title={t.products.title} desc={t.products.desc} />
         <div className="mt-16 grid auto-rows-[minmax(280px,auto)] gap-5 sm:grid-cols-2 lg:grid-cols-4">

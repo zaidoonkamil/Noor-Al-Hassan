@@ -8,7 +8,7 @@ import { ArtClip, ArtNotebook, ArtPen, ArtPencil, ArtRuler, ArtScissors, IconArr
 import { Magnetic, SplitWords, ease } from "./motion";
 import ParticleField from "./ParticleField";
 
-const INTRO = 1.9; // wait for preloader
+const INTRO = 1.3; // wait for preloader
 
 type Orbiter = { Art: ComponentType<SVGProps<SVGSVGElement>>; angle: number; radius: number; rot: number; size: string; depth: number };
 
@@ -40,7 +40,7 @@ function Floating({ o, mx, my, i }: { o: Orbiter; mx: MotionValue<number>; my: M
     >
       <div className="-translate-x-1/2 -translate-y-1/2">
         <div className="animate-float" style={{ animationDelay: `${i * -1.2}s`, animationDuration: `${6 + i}s` }}>
-          <o.Art className={`${o.size} h-auto drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)]`} style={{ transform: `rotate(${o.rot}deg)` }} />
+          <o.Art className={`${o.size} h-auto lg:drop-shadow-[0_12px_20px_rgba(0,0,0,0.5)]`} style={{ transform: `rotate(${o.rot}deg)` }} />
         </div>
       </div>
     </motion.div>
@@ -76,13 +76,13 @@ export default function Hero({ t }: { t: Dictionary }) {
       {/* ---------- background ---------- */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#0d1840_0%,#050a1c_60%)]" />
-        <div className="absolute -start-40 top-[-10%] h-[620px] w-[620px] animate-aurora rounded-full bg-brand-blue/30 blur-[140px]" />
+        <div className="absolute -start-40 top-[-10%] h-[620px] w-[620px] animate-aurora bg-[radial-gradient(closest-side,rgba(47,111,184,0.48),transparent)]" />
         <div
-          className="absolute -end-40 top-[20%] h-[560px] w-[560px] animate-aurora rounded-full bg-brand-purple/30 blur-[140px]"
+          className="absolute -end-40 top-[20%] h-[560px] w-[560px] animate-aurora bg-[radial-gradient(closest-side,rgba(123,79,166,0.48),transparent)]"
           style={{ animationDelay: "-7s" }}
         />
         <div
-          className="absolute bottom-[-20%] start-1/3 h-[420px] w-[420px] animate-aurora rounded-full bg-brand-amber/15 blur-[140px]"
+          className="absolute bottom-[-20%] start-1/3 h-[420px] w-[420px] animate-aurora bg-[radial-gradient(closest-side,rgba(244,181,79,0.24),transparent)]"
           style={{ animationDelay: "-14s" }}
         />
         <div className="absolute inset-0 grid-bg" />
@@ -190,7 +190,7 @@ export default function Hero({ t }: { t: Dictionary }) {
                   fill
                   priority
                   sizes="(max-width: 1024px) 50vw, 300px"
-                  className="object-contain drop-shadow-[0_25px_45px_rgba(47,111,184,0.55)]"
+                  className="object-contain lg:drop-shadow-[0_25px_45px_rgba(47,111,184,0.55)]"
                 />
               </div>
             </motion.div>

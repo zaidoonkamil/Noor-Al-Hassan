@@ -59,7 +59,7 @@ export default function ContactSection({ t }: { t: Dictionary }) {
 
   return (
     <section id="contact" className="relative overflow-hidden py-28 sm:py-36">
-      <div className="absolute left-1/2 top-1/3 -z-10 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[#25D366]/10 blur-[160px]" />
+      <div className="absolute left-1/2 top-1/3 -z-10 h-[600px] w-[900px] -translate-x-1/2 bg-[radial-gradient(closest-side,rgba(37,211,102,0.16),transparent)]" />
 
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
@@ -105,7 +105,7 @@ export default function ContactSection({ t }: { t: Dictionary }) {
                   title="map"
                   src={company.mapsEmbed}
                   loading="lazy"
-                  className="pointer-events-none h-44 w-full grayscale invert-[0.9] hue-rotate-180 transition-all duration-700 group-hover:grayscale-0 group-hover:invert-0 group-hover:hue-rotate-0"
+                  className="pointer-events-none h-44 w-full lg:grayscale lg:invert-[0.9] lg:hue-rotate-180 lg:transition-all lg:duration-700 lg:group-hover:grayscale-0 lg:group-hover:invert-0 lg:group-hover:hue-rotate-0"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
                 <span className="absolute bottom-3 start-3 rounded-full bg-night/80 px-3 py-1.5 text-xs font-bold backdrop-blur">

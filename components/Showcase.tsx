@@ -2,30 +2,44 @@
 
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/lib/content";
 import { Reveal, SplitWords } from "./motion";
 
-/** Vertical scroll drives a horizontal gallery while the section is pinned */
+/**
+ * Desktop: vertical scroll drives a horizontal gallery while the section is pinned.
+ * Phones/tablets: a plain native swipe carousel (no pinning) — smooth and
+ * immune to the mobile address-bar resizing the viewport while scrolling.
+ */
 export default function Showcase({ t, rtl }: { t: Dictionary; rtl: boolean }) {
   const section = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
+  const [pinned, setPinned] = useState(false);
   const [distance, setDistance] = useState(0);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px) and (pointer: fine)");
+    const update = () => setPinned(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (!pinned) {
+      setDistance(0);
+      return;
+    }
+    let lastW = 0;
     const measure = () => {
-      if (!track.current) return;
+      if (!track.current || window.innerWidth === lastW) return; // ignore height-only resizes
+      lastW = window.innerWidth;
       setDistance(Math.max(0, track.current.scrollWidth - window.innerWidth));
     };
     measure();
-    const ro = new ResizeObserver(measure);
-    if (track.current) ro.observe(track.current);
     window.addEventListener("resize", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, []);
+    return () => window.removeEventListener("resize", measure);
+  }, [pinned]);
 
   const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
   const smooth = useSpring(scrollYProgress, { stiffness: 90, damping: 25, mass: 0.4 });
@@ -33,8 +47,13 @@ export default function Showcase({ t, rtl }: { t: Dictionary; rtl: boolean }) {
   const bar = useTransform(smooth, [0, 1], [0, 1]);
 
   return (
-    <section ref={section} id="showcase" className="relative" style={{ height: `calc(100vh + ${distance}px)` }}>
-      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden">
+    <section
+      ref={section}
+      id="showcase"
+      className={`relative ${pinned ? "" : "py-24"}`}
+      style={pinned ? { height: `calc(100vh + ${distance}px)` } : undefined}
+    >
+      <div className={pinned ? "sticky top-0 flex h-[100vh] flex-col justify-center overflow-hidden" : "relative overflow-hidden"}>
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,#0d1840_0%,#050a1c_65%)]" />
         <span className="text-outline pointer-events-none absolute inset-x-0 top-[8%] select-none whitespace-nowrap text-center font-display text-[18vw] font-black leading-none opacity-60">
           {t.showcase.eyebrow}
@@ -52,13 +71,21 @@ export default function Showcase({ t, rtl }: { t: Dictionary; rtl: boolean }) {
           <p className="max-w-xs text-sm text-mist">{t.showcase.desc}</p>
         </div>
 
-        <motion.div ref={track} style={{ x }} className="flex w-max gap-6 px-5 sm:px-8 lg:px-[max(2rem,calc((100vw-80rem)/2+2rem))]">
+        <motion.div
+          ref={track}
+          style={pinned ? { x } : undefined}
+          className={
+            pinned
+              ? "flex w-max gap-6 px-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+              : "flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:px-8 [&::-webkit-scrollbar]:hidden"
+          }
+        >
           {t.showcase.items.map((it, i) => (
             <figure
               key={it.image}
               data-cursor
-              className="group relative h-[46vh] w-[72vw] shrink-0 overflow-hidden rounded-[2rem] border border-white/10 bg-night-800 sm:h-[52vh] sm:w-[40vw] lg:w-[28vw]"
-              style={{ marginTop: i % 2 ? "3rem" : 0 }}
+              className="group relative h-[360px] w-[78vw] shrink-0 snap-center overflow-hidden rounded-[2rem] border border-white/10 bg-night-800 sm:w-[45vw] lg:h-[52vh] lg:w-[28vw]"
+              style={pinned ? { marginTop: i % 2 ? "3rem" : 0 } : undefined}
             >
               <Image
                 src={it.image}
@@ -78,7 +105,7 @@ export default function Showcase({ t, rtl }: { t: Dictionary; rtl: boolean }) {
           ))}
         </motion.div>
 
-        <div className="container-x mt-10">
+        <div className={`container-x mt-10 ${pinned ? "" : "hidden"}`}>
           <div className="h-[2px] w-full overflow-hidden rounded-full bg-white/10">
             <motion.div
               style={{ scaleX: bar }}

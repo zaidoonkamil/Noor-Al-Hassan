@@ -1,21 +1,11 @@
 "use client";
 
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
 import type { Dictionary } from "@/lib/content";
 import { IconPin } from "./icons";
 import { Reveal, SplitWords } from "./motion";
-
-function Word({ word, progress, range }: { word: string; progress: MotionValue<number>; range: [number, number] }) {
-  const opacity = useTransform(progress, range, [0.15, 1]);
-  const color = useTransform(progress, range, ["#9aa7c7", "#eef2fb"]);
-  return (
-    <motion.span style={{ opacity, color }} className="inline">
-      {word}{" "}
-    </motion.span>
-  );
-}
 
 export default function About({ t }: { t: Dictionary }) {
   const section = useRef<HTMLElement>(null);
@@ -28,10 +18,12 @@ export default function About({ t }: { t: Dictionary }) {
 
   const { scrollYProgress: p } = useScroll({ target: para, offset: ["start 85%", "end 45%"] });
   const words = t.about.reveal.split(" ");
+  // one CSS variable drives every word (no per-word animated layers)
+  useMotionValueEvent(p, "change", (v) => para.current?.style.setProperty("--p", (v * words.length).toFixed(2)));
 
   return (
     <section ref={section} id="about" className="relative overflow-hidden py-28 sm:py-36">
-      <div className="absolute end-0 top-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-brand-purple/15 blur-[150px]" />
+      <div className="absolute end-0 top-1/4 -z-10 h-[500px] w-[500px] bg-[radial-gradient(closest-side,rgba(123,79,166,0.24),transparent)]" />
       <div className="container-x grid items-center gap-16 lg:grid-cols-2">
         {/* collage */}
         <div className="relative mx-auto h-[460px] w-full max-w-[520px] sm:h-[540px]">
@@ -66,9 +58,11 @@ export default function About({ t }: { t: Dictionary }) {
             <SplitWords text={t.about.title} />
           </h2>
 
-          <p ref={para} className="mt-8 text-lg leading-9 sm:text-xl sm:leading-10">
+          <p ref={para} className="reveal-words mt-8 text-lg leading-9 sm:text-xl sm:leading-10" style={{ ["--p" as string]: 0 }}>
             {words.map((w, i) => (
-              <Word key={i} word={w} progress={p} range={[i / words.length, (i + 1) / words.length]} />
+              <span key={i} style={{ ["--i" as string]: i }}>
+                {w}{" "}
+              </span>
             ))}
           </p>
 

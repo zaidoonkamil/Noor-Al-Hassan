@@ -28,7 +28,7 @@ export default function Marquee({ items }: { items: string[] }) {
       <div className="-rotate-2 scale-105 border-y border-white/10 bg-gradient-to-r from-brand-deep via-brand-purple to-brand-deep py-5 text-paper shadow-[0_20px_60px_-20px_rgba(123,79,166,0.6)]">
         <Track items={items} />
       </div>
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 rotate-[2.5deg] scale-105 border-y border-white/5 bg-night-800/90 py-4 text-paper/40 backdrop-blur">
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 rotate-[2.5deg] scale-105 border-y border-white/5 bg-night-800/90 py-4 text-paper/40">
         <Track items={items} reverse />
       </div>
     </section>

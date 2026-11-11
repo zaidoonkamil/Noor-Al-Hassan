@@ -32,7 +32,7 @@ export function Stats({ t, locale }: { t: Dictionary; locale: Locale }) {
 export function WhyUs({ t }: { t: Dictionary }) {
   return (
     <section id="why" className="relative overflow-hidden py-28 sm:py-36">
-      <div className="absolute end-0 top-1/3 -z-10 h-[460px] w-[460px] rounded-full bg-brand-amber/10 blur-[150px]" />
+      <div className="absolute end-0 top-1/3 -z-10 h-[460px] w-[460px] bg-[radial-gradient(closest-side,rgba(244,181,79,0.16),transparent)]" />
       <div className="container-x">
         <SectionHeading eyebrow={t.why.eyebrow} title={t.why.title} />
         <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

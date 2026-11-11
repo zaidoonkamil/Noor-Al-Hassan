@@ -164,3 +164,35 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ------------------------------------------------------------------
+   Mobile / tablet performance: drop GPU-heavy effects on small or
+   touch screens (backdrop blur, full-screen noise, repainting
+   gradient animations). The desktop look is unchanged.
+------------------------------------------------------------------- */
+@media (max-width: 1023px), (pointer: coarse) {
+  *,
+  *::before,
+  *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .glass {
+    background-color: rgba(8, 16, 48, 0.94);
+  }
+  .noise {
+    display: none;
+  }
+  .border-glow::before {
+    animation: none;
+  }
+  .text-gradient-anim {
+    animation: none;
+  }
+}
+
+/* scroll-driven word reveal (About) — driven by a single --p variable */
+.reveal-words span {
+  color: #eef2fb;
+  opacity: clamp(0.18, calc(var(--p) - var(--i)), 1);
+}

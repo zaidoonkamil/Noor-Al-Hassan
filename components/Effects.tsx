@@ -10,7 +10,8 @@ import { IconWhatsapp } from "./icons";
 /* ---------------- Smooth scrolling ---------------- */
 export function SmoothScroll() {
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // touch devices already scroll natively & smoothly — skip Lenis there
+    if (window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return;
     const lenis = new Lenis({ duration: 1.15, smoothWheel: true, anchors: { offset: -80 } });
     let id = 0;
     const raf = (t: number) => {
@@ -42,7 +43,7 @@ export function Preloader({ text }: { text: string }) {
   useEffect(() => {
     document.documentElement.style.overflow = "hidden";
     const start = performance.now();
-    const total = 1700;
+    const total = 1100;
     let id = 0;
     const tick = (t: number) => {
       const p = Math.min(1, (t - start) / total);
@@ -176,7 +177,7 @@ export function WhatsAppFloat({ phone, message, label }: { phone: string; messag
       aria-label={label}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 2.6, type: "spring", stiffness: 260, damping: 18 }}
+      transition={{ delay: 1.8, type: "spring", stiffness: 260, damping: 18 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.92 }}
       className="fixed bottom-6 end-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_40px_-6px_rgba(37,211,102,0.7)]"
